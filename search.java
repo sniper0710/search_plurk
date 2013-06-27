@@ -1,6 +1,9 @@
 package sniper;
 
 
+import org.python.util.PythonInterpreter;
+import org.python.core.PySystemState;
+import org.python.core.PyString;
 //import joptsimple.OptionParser;
 //import joptsimple.OptionSet;
 
@@ -14,11 +17,13 @@ import java.io.*;
 //import com.google.jplurk_oauth.Offset;
 //import org.scribe.model.Response;
 import sniper.authentication;
+import sniper.GetToken;
 import com.google.jplurk_oauth.skeleton.Args;
 import sniper.Offset_sniper;
 import java.lang.String;
 import java.util.*;
 import java.text.SimpleDateFormat;
+
 
 public class search{
 	public Map<String,String> convert_month = new LinkedHashMap<String, String>();
@@ -66,7 +71,7 @@ public class search{
     		}
         }
 	}
-	
+
 	//search title and reply
 	public void found_item_all(Iterator iter,String item){	
 		boolean found;
@@ -164,8 +169,8 @@ public class search{
         Iterator iter = plurks_map.entrySet().iterator(); 
         found_item(iter,item);
         System.out.println("\n\n\t\tSearch Complete\n\n");
-        System.out.println(plurks_map.size());
-        System.out.println(plurks_map);
+//        System.out.println(plurks_map.size());
+//        System.out.println(plurks_map);
         return result_plurks_map;
     	}
 	
@@ -184,14 +189,10 @@ public class search{
         System.out.println("\n\n\t\tSearch Complete\n\n");
         return result_plurks_map;
 	}
-	
-	public void test() throws JSONException, RequestException{
-		authentication authObj = new authentication();
-		PlurkOAuth auth=authObj.auth();
-		JSONArray plurks= new JSONArray();
-		plurks=this.get_all_title(plurks,auth);
-		System.out.println(plurks_map);
+		
+	public void test() throws JSONException, IOException{
 	}
+	
 	
 	public static void main(String[] args) throws RequestException, IOException, JSONException {
 		String filename="search_result_plurk";
@@ -208,12 +209,14 @@ public class search{
 //		test.test();
 
 		Scanner scanner = new Scanner(System.in);
-        System.out.print("Please Enter \n  1 for query title \n  2 for query reply \n  cmd : ");
+        System.out.print("Please Enter \n  1 for query title \n  2 for query reply \n  3 for generate access token \n cmd : ");
         String choice=scanner.next();
         Long start_time=System.currentTimeMillis();
         if (choice.equals("1")){
             System.out.print("\nPlease Enter query terms : ");
             String item = scanner.next();
+            System.out.println(choice);
+            System.out.println(item);
         	result=test.search_result_title(item);
             Iterator iter = result.entrySet().iterator(); 
             while (iter.hasNext()) { 
@@ -238,6 +241,14 @@ public class search{
                 	  outputFile.write("\tReply : "+reply+"\n");
                 }
             }
+        }
+        else if (choice.equals("3")){
+        	GetToken GetTokenObj=new GetToken();
+        	System.out.print("\nPlease Enter your plurl id : ");
+            String user = scanner.next();
+            System.out.print("\nPlease Enter your password : ");
+            String passwd= scanner.next();
+        	GetTokenObj.Get_perment_token(user, passwd);
         }
         else{
         	System.out.println("ERROR command");

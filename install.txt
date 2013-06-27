@@ -1,8 +1,8 @@
 1. get jplurk-oauth : git://github.com/qrtt1/jplurk-oauth.git
 2. put the files into a new package of jplurk
-3. add a file properties.properties at user_home directory, it should containts 4 columns
+3-1. add a file properties.properties at working directory, it should containts 4 columns
      cousumer_key=XXX
      consumer_secret_key=XXXXXXX
      token_key=XXXX
      token_secret_key=XXXXX
-
+3-2. run code to generate properties.properties automatically
